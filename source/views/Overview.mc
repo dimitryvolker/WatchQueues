@@ -13,18 +13,11 @@ class OverviewDelegate extends Ui.BehaviorDelegate {
 
     function onKeyPressed(keyEvent){
         if(keyEvent.getKey() == 8){ // Down
-            if(_view._currentPage.hasNext){
-                _view._currentPage = _view._pages[_view._currentPage.index + 1]; 
-                
-                var fView = new RideQueueView(_view._currentPage.rides, _view._currentPage.hasPrev, _view._currentPage.hasNext);
-                WatchUi.pushView(fView, new OverviewDelegate(_view), Ui.SLIDE_UP);
-            }
+            nextPage();
         }
 
         if(keyEvent.getKey() == 13){ // Up
-            if(_view._currentPage.hasPrev){
-                WatchUi.popView(Ui.SLIDE_DOWN);
-            }
+            prevPage();
         }
 
         if(keyEvent.getKey() == 4){ // Start
@@ -32,7 +25,30 @@ class OverviewDelegate extends Ui.BehaviorDelegate {
     }
 
     function onSwipe(swipeEvent){
-        System.println(SwipeEvent.getDirection());
+        System.println(swipeEvent.getDirection());
+        if(swipeEvent.getDirection() == 2){
+            prevPage();
+        }
+
+        if(swipeEvent.getDirection() == 0){
+            nextPage();
+        }
+    }
+
+    function nextPage(){
+        if(_view._currentPage.hasNext){
+            _view._currentPage = _view._pages[_view._currentPage.index + 1]; 
+            var fView = new RideQueueView(_view._currentPage.rides, _view._currentPage.hasPrev, _view._currentPage.hasNext);
+            WatchUi.pushView(fView, new OverviewDelegate(_view), Ui.SLIDE_UP);
+        }
+    }
+
+    function prevPage(){
+         if(_view._currentPage.hasPrev){
+            System.println("Switching to page: "+ (_view._currentPage.index - 1));
+            _view._currentPage = _view._pages[_view._currentPage.index - 1]; 
+            WatchUi.popView(Ui.SLIDE_DOWN);
+        }
     }
 }
 
@@ -97,6 +113,7 @@ class Overview extends Ui.View {
             {
                 var newPage = new Page();
                 newPage.index = pIndex;
+                System.println("Initialized page " + newPage.index);
                 newPage.rides = rides.slice(i, i + 3);
                 newPage.hasPrev = i > 0 ;
                 newPage.hasNext = (i + 3) <= rides.size();
