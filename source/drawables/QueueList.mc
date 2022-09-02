@@ -23,7 +23,6 @@ public class QueueList extends WatchUi.Drawable {
             var position = new Position();
             position.x = _initPosition.x;
             position.y = _initPosition.y + ((_gap + prevLandHeight));
-            System.println(position.y);
 
             var queueDrawable = new LandQueue({
                 :land=>_lands[i],
