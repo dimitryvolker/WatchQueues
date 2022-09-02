@@ -9,7 +9,6 @@ class OverviewDelegate extends Ui.BehaviorDelegate {
     }
 
     function onKeyPressed(keyEvent){
-        System.println(keyEvent.getKey());
         if(keyEvent.getKey() == 8){
             _view.scrollDown();
         }
@@ -17,6 +16,10 @@ class OverviewDelegate extends Ui.BehaviorDelegate {
         if(keyEvent.getKey() == 13){
             _view.scrollUp();
         }
+    }
+
+    function onSwipe(swipeEvent){
+        System.println(SwipeEvent.getDirection());
     }
 }
 
@@ -32,12 +35,12 @@ class Overview extends Ui.View {
     }
 
     function scrollUp() {
-        scrollY += 50;
+        scrollY += 100;
         WatchUi.requestUpdate();
     }
 
     function scrollDown() {
-        scrollY -= 50;
+        scrollY -= 100;
         WatchUi.requestUpdate();
     }
 

@@ -13,13 +13,7 @@ public class LandQueue extends WatchUi.Drawable {
         _initPosition = params.get(:position);
         _drawableHeight = 47;
         _gap = 10; 
-
-        System.println(_land.name);
-        System.println("    Height calculation: ((" + _drawableHeight + " + " + _gap + ") * " + _land.rides.size() +") + 67" );
-
         Height = ((_drawableHeight + _gap) * _land.rides.size() )+ 67;
-        System.println("    Result: " + Height);
-        System.println("");
     }
 
     function draw(dc) {
