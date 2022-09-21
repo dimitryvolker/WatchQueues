@@ -78,7 +78,7 @@ class Container{
 
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK); //Set text color
     }
-    
+
     /**
     * Calculate the relative position compared to the container
     * @param {Position} pos - Position with percentages
