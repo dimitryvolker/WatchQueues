@@ -58,7 +58,7 @@ class RideQueueView extends WatchUi.View{
         var cc = getContent(dc);
         for (var i = 0; i < _rides.size(); i++) {
             // Create a child container for the rendering
-            var rideContainer = cc.addChildContainer(100.0 / _rides.size());
+            var rideContainer = cc.addChildContainer(100.0 / 3);
             var queue = new Queue(_rides[i]);
             queue.draw(dc, rideContainer);
         }

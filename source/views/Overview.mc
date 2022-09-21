@@ -128,7 +128,7 @@ class Overview extends Ui.View {
                 _pages.add(newPage);
                 pIndex++;
             }
-            
+
             _currentPage = _pages[0];
 
             var fView = new RideQueueView(_currentPage.rides, _currentPage.hasPrev, _currentPage.hasNext);
