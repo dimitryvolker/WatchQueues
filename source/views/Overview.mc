@@ -1,4 +1,5 @@
 using Toybox.WatchUi as Ui;
+using Toybox.Application;
 
 class OverviewDelegate extends Ui.BehaviorDelegate {
     hidden var _view;
@@ -8,20 +9,26 @@ class OverviewDelegate extends Ui.BehaviorDelegate {
         _view = view;
     }
 
-    function onMenu() {
-    }
-
     function onKeyPressed(keyEvent){
+        System.println(keyEvent.getKey());
         if(keyEvent.getKey() == 8){ // Down
             nextPage();
+            return true;
         }
 
         if(keyEvent.getKey() == 13){ // Up
             prevPage();
+            return true;
         }
 
-        if(keyEvent.getKey() == 4){ // Start
+        if(keyEvent.getKey() == 5){
+            var app = Application.getApp();
+            app.onStop(null);
+            app.onStop(null);
+            return true;
         }
+
+        return false;
     }
 
     function onSwipe(swipeEvent){
@@ -45,8 +52,9 @@ class OverviewDelegate extends Ui.BehaviorDelegate {
 
     function prevPage(){
          if(_view._currentPage.hasPrev){
-            System.println("Switching to page: "+ (_view._currentPage.index - 1));
             _view._currentPage = _view._pages[_view._currentPage.index - 1]; 
+            var fView = new RideQueueView(_view._currentPage.rides, _view._currentPage.hasPrev, _view._currentPage.hasNext);
+            //WatchUi.switchToView(fView, new OverviewDelegate(_view), Ui.SLIDE_DOWN);
             WatchUi.popView(Ui.SLIDE_DOWN);
         }
     }
@@ -72,6 +80,7 @@ class Overview extends Ui.View {
         _currentPage.rides = new [0];
         _currentPage.hasNext = true;
         _currentPage.hasPrev = false;
+        _agent.getQueues(160,method(:onInitDataRecieve));
     }
 
     // Handle layout
@@ -81,7 +90,7 @@ class Overview extends Ui.View {
 
     // Handle becoming visible
     function onShow() {
-        _agent.getQueues(160,method(:onInitDataRecieve));
+        // Ui.popView(Ui.SLIDE_IMMEDIATE);
     }
 
     function onUpdate(dc) {
@@ -113,7 +122,6 @@ class Overview extends Ui.View {
             {
                 var newPage = new Page();
                 newPage.index = pIndex;
-                System.println("Initialized page " + newPage.index);
                 newPage.rides = rides.slice(i, i + 3);
                 newPage.hasPrev = i > 0 ;
                 newPage.hasNext = (i + 3) <= rides.size();
