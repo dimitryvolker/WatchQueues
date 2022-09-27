@@ -43,5 +43,13 @@ class Park {
     /**
     *  Default Constructor
     */
-    public function initialize(){}
+    function initialize(data as Dictionary) {
+        id = data["id"];
+        name = data["name"];
+        country = data["country"];
+        continent = data["continent"];
+        latitude = data["latitude"];
+        longitude = data["longitude"];
+        timezone = data["timezone"];
+    }
 }

@@ -1,5 +1,6 @@
 using Toybox.WatchUi as Ui;
 using Toybox.Application;
+import Toybox.Application.Storage;
 
 class OverviewDelegate extends Ui.BehaviorDelegate {
     hidden var _view;
@@ -25,6 +26,12 @@ class OverviewDelegate extends Ui.BehaviorDelegate {
             var app = Application.getApp();
             app.onStop(null);
             app.onStop(null);
+            return true;
+        }
+
+        // Open settings menu
+        if(keyEvent.getKey() == 4){
+            var generalSettings = new GeneralSettings();
             return true;
         }
 
@@ -54,7 +61,6 @@ class OverviewDelegate extends Ui.BehaviorDelegate {
          if(_view._currentPage.hasPrev){
             _view._currentPage = _view._pages[_view._currentPage.index - 1]; 
             var fView = new RideQueueView(_view._currentPage.rides, _view._currentPage.hasPrev, _view._currentPage.hasNext);
-            //WatchUi.switchToView(fView, new OverviewDelegate(_view), Ui.SLIDE_DOWN);
             WatchUi.popView(Ui.SLIDE_DOWN);
         }
     }
@@ -80,7 +86,15 @@ class Overview extends Ui.View {
         _currentPage.rides = new [0];
         _currentPage.hasNext = true;
         _currentPage.hasPrev = false;
-        _agent.getQueues(160,method(:onInitDataRecieve));
+
+        var themeParkId = 160;
+        var selectedThemepark = Storage.getValue("selected_themepark_id");
+        if(selectedThemepark != null){
+            themeParkId = selectedThemepark;
+        }
+
+        System.println("Showing park: " + themeParkId);
+        _agent.getQueues(themeParkId,method(:onInitDataRecieve));
     }
 
     // Handle layout
