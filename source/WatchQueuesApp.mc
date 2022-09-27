@@ -1,9 +1,9 @@
 import Toybox.Application;
 import Toybox.Lang;
-import Toybox.WatchUi;
+using Toybox.WatchUi as Ui;
 
 class WatchQueuesApp extends Application.AppBase {
-    hidden var View;
+    private var _controller as RideQueueViewController;
 
     function initialize() {
         AppBase.initialize();
@@ -11,7 +11,11 @@ class WatchQueuesApp extends Application.AppBase {
 
     // onStart() is called on application start up
     function onStart(state as Dictionary?) as Void {
-    		View = new Overview();
+        _controller = new RideQueueViewController(method(:onControllerInitialized));
+    }
+
+    function onControllerInitialized() as Void {
+        Ui.switchToView(_controller.currentPage, new RideQueueDelegate(_controller), Ui.SLIDE_IMMEDIATE);
     }
 
     // onStop() is called when your application is exiting
@@ -20,7 +24,7 @@ class WatchQueuesApp extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView(){
-        return [ View ];
+        return [ new LoadingView() ];
     }
 }
 

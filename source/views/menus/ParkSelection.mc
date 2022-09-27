@@ -2,15 +2,17 @@ using Toybox.WatchUi as Ui;
 import Toybox.Application.Storage;
 
 class ParkSelectionMenuDelegate extends Ui.Menu2InputDelegate {
-    function initialize() {
+    private var _callback as Method;                // Callback used for when settings has been changed
+
+    function initialize(callback) {
         Menu2InputDelegate.initialize();
+        _callback = callback;
     }
 
     function onSelect(item) {
         Storage.setValue("selected_themepark_label", item.getLabel());
         Storage.setValue("selected_themepark_id", item.getId());
-        WatchUi.popView(Ui.SLIDE_LEFT);
-        WatchUi.popView(Ui.SLIDE_LEFT);
+        var generalSettings = new GeneralSettings(_callback);
     }
 }
 
@@ -20,11 +22,11 @@ class ParkSelection {
     public var menu as WatchUI.Menu2;
     public var delegate as GeneralSettingsMenuDelegate;
 
-    function initialize() {
+    function initialize(callback) {
         menu = new Ui.Menu2({:title=>"Themepark"});
         _agent = new QueueTimesAgent();
         _agent.getThemeParks(method(:onInitDataRecieve));
-        delegate = new ParkSelectionMenuDelegate();
+        delegate = new ParkSelectionMenuDelegate(callback);
     }
 
     function onInitDataRecieve(responseCode as Number, data as Dictionary?) as Void {
@@ -54,6 +56,6 @@ class ParkSelection {
         }
 
         // Push the Menu2 View set up in the initializer
-        WatchUi.pushView(menu, delegate, WatchUi.SLIDE_IMMEDIATE);
+        WatchUi.switchToView(menu, delegate, WatchUi.SLIDE_IMMEDIATE);
     }
 }

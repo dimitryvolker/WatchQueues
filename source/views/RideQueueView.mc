@@ -5,16 +5,19 @@ using Toybox.WatchUi;
  */
 class RideQueueView extends WatchUi.View{
     private var _rides as Array<Ride>;
-    private var _hasPrev as Boolean;
-    private var _hasNext as Boolean;
     private var _enableHeader = false;
 
+    public var hasPrev as Boolean;
+    public var hasNext as Boolean;
+    public var id as Number;
+
     // Default Constructor
-    function initialize(rides as Array<Ride>, hasPrev as Boolean, hasNext as Boolean){
+    function initialize(id as Number, rides as Array<Ride>, hasPrev as Boolean, hasNext as Boolean){
         View.initialize();
+        self.id = id;
         _rides = rides;
-        _hasPrev = hasPrev;
-        _hasNext = hasNext;
+        self.hasPrev = hasPrev;
+        self.hasNext = hasNext;
     }
 
     /*
@@ -36,7 +39,7 @@ class RideQueueView extends WatchUi.View{
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK); //Set text color
  
         // If there is a previous view we show a arrow that points upwards
-        if(_hasPrev){
+        if(hasPrev){
             var hc = getHeader(dc);
             var upArrow = WatchUi.loadResource( Rez.Drawables.UpArrow ) as BitmapResource;
             hc.drawBitmapCenter(dc, upArrow);
@@ -46,7 +49,7 @@ class RideQueueView extends WatchUi.View{
         dRides(dc);
 
         // If there is a next view we show a arrow that points downwards
-        if(_hasNext){
+        if(hasNext){
             var fc = getFooter(dc);
             var downArrow = WatchUi.loadResource( Rez.Drawables.DownArrow ) as BitmapResource;
             fc.drawBitmapCenter(dc, downArrow);

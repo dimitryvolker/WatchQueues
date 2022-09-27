@@ -2,8 +2,16 @@ using Toybox.WatchUi as Ui;
 import Toybox.Application.Storage;
 
 class GeneralSettingsMenuDelegate extends Ui.Menu2InputDelegate {
-    function initialize() {
+     private var _callback as Method;                // Callback used for when settings has been changed
+
+    function initialize(callback) {
         Menu2InputDelegate.initialize();
+        _callback = callback;
+    }
+
+    function onBack(){
+        _callback.invoke();
+        return true;
     }
 
     function onSelect(item) {
@@ -13,7 +21,7 @@ class GeneralSettingsMenuDelegate extends Ui.Menu2InputDelegate {
 
         if(selectedItemId.equals("selected_park")){
             System.println("TEST");
-            var subMenu = new ParkSelection();
+            var subMenu = new ParkSelection(_callback);
             return true;
         }
 
@@ -27,7 +35,7 @@ class GeneralSettings {
     private var _parkItem as WatchUI.MenuItem;
     private var _sortItem as WatchUI.MenuItem;
 
-    function initialize() {
+    function initialize(callback) {
         menu = new Ui.Menu2({:title=>"Settings"});
         var selectedThemepark = Storage.getValue("selected_themepark_label");
         System.println(selectedThemepark);
@@ -43,9 +51,9 @@ class GeneralSettings {
         _sortItem = new Ui.MenuItem("Sorted By", "Default", "selected_sorted", null);
         menu.addItem(_sortItem);
 
-        delegate = new GeneralSettingsMenuDelegate();
+        delegate = new GeneralSettingsMenuDelegate(callback);
 
         // Push the Menu2 View set up in the initializer
-        WatchUi.pushView(menu, delegate, WatchUi.SLIDE_IMMEDIATE);
+        WatchUi.switchToView(menu, delegate, WatchUi.SLIDE_IMMEDIATE);
     }
 }
