@@ -7,29 +7,22 @@ class ParkService {
     private var _agent as QueueTimesAgent;          // Agent for communicating with the QueueTimes API
     private var _selectedThemeparkId as Number;     // Selected Thempark id
     private var _storageService as StorageService;  // Service for handling storage on the garmin device
-    private var _onQueueTimesUpdated as Method;    // Callback method triggered when new data has been added
+    private var _onQueueTimesUpdated as Method;     // Callback method triggered when new data has been added
 
     /*
-        Default constructor
-    */
+     *   Default constructor
+     */
     public function initialize(onQueueTimesUpdated as Method){
         _agent = new QueueTimesAgent();
         _storageService = new StorageService();
-        _selectedThemeparkId = _storageService.getSelectedPark();
+        _selectedThemeparkId = _storageService.getSelectedParkId();
         _onQueueTimesUpdated = onQueueTimesUpdated;
     }
 
     /*
-        Retrieves the rides of a selected themepark
-    */
-    public function getRidesOfSelectedThemepark() as Void{
-        var localRides =  _storageService.getRides(_selectedThemeparkId);
-
-        // If whe have the rides cached we can return them
-        if(localRides != null || localRides.size() > 0){
-            _onQueueTimesUpdated.invoke(localRides);
-        }
-
+     *   Retrieves the rides of a selected themepark
+     */
+    public function fetchRides() as Void{
         _agent.getQueues(_selectedThemeparkId, method(:onQueueDataRecieved));
     }
 
@@ -42,42 +35,17 @@ class ParkService {
             return;
         }
 
-        var rides = data["lands"].size() > 0 ? mapLandResponseToRides(data["lands"]) : mapRidesResponseToRides(data["rides"]);
-        _onQueueTimesUpdated.invoke(rides);
-        _storageService.saveRides(_selectedThemeparkId, rides);
-    }
-
-    /*
-     *  Map dictionary with lands to rides
-     */
-    private function mapLandResponseToRides(dataLands) as Array<Ride>{
-        var lands = new [0];
-        var rides = new [0];
-
-        for (var i = 0; i < dataLands.size(); i++) {
-            lands.add(new Land(dataLands[i]));
-        }
-
-        // Convert lands into rides into pages
-        for (var i = 0; i < lands.size(); i++) {
-            for(var j = 0; j < lands[i].rides.size(); j++){
-                rides.add(lands[i].rides[j]);
+        var rides = [0]; // Rides collection
+        
+        // Queue-times can divide a theme park into so called "lands" 
+        if(data["lands"].size() as Number > 0){
+            for (var i = 0; i < data["lands"].size() as Number; i++) {
+                rides.addAll(data["lands"][i] as Array<Dictionary>);
             }
+        }else{
+            rides.addAll(data["rides"] as Array<Dictionary>);
         }
 
-        return rides;
-    }
-
-    /*
-     *  Map dictionary to ride objects
-     */
-    private function mapRidesResponseToRides(dataRides) as Array<Ride>{
-        var rides = new [0];
-        for (var i = 0; i < dataRides.size(); i++) {
-            rides.add(new Ride(dataRides[i]));
-            System.println(rides[i].name);
-        }
-
-        return rides;
+        _onQueueTimesUpdated.invoke(rides);
     }
 }

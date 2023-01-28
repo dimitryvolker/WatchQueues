@@ -5,22 +5,19 @@ import Toybox.Application;
     Service for handling storage on the device
 */
 class StorageService {
-    private var _parksStorageLocation = "parks";
-    private var _ridesStorageLocation = "rides";
+    private var _selectedParkIdKey = "selected_themepark_id";
 
     /*
-        Save lands on the device
-    */
-    public function saveRides(themeparkId as Number, rides as Array<Ride>){
-        Storage.setValue("rides_" + themeparkId, rides);
+     *  Set the selected park id into the storage of the device
+     */
+    public function setSelectedParkId(parkId as Number) as Void{
+        Storage.setValue(_selectedParkIdKey, parkId);
     }
 
-    public function getRides(themeparkId as Number) as Array<Ride>{
-        return Storage.getValue("rides_" + themeparkId);
+    /*
+     *  Get the selected park id on the device
+     */
+    public function getSelectedParkId() as Number {
+        return Storage.getValue(_selectedParkIdKey);
     }
-
-    public function getSelectedPark() as Number{
-        return Storage.getValue("selected_themepark_id") != null ? Storage.getValue("selected_themepark_id") : 160;
-    }
-
 }
