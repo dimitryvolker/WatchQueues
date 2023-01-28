@@ -1,5 +1,6 @@
 using Toybox.WatchUi as Ui;
 import Toybox.Application.Storage;
+import Toybox.Lang;
 
 class GeneralSettingsMenuDelegate extends Ui.Menu2InputDelegate {
      private var _callback as Method;                // Callback used for when settings has been changed
@@ -9,22 +10,14 @@ class GeneralSettingsMenuDelegate extends Ui.Menu2InputDelegate {
         _callback = callback;
     }
 
-    function onBack(){
+    function onBack() as Void{
         _callback.invoke();
-        return true;
     }
 
-    function onSelect(item) {
+    function onSelect(item) as Void {
         var selectedItemId = item.getId();
-        System.println(selectedItemId);
-        System.println(item.getLabel());
-
         if(selectedItemId.equals("selected_park")){
-            System.println("TEST");
             var subMenu = new ParkSelection(_callback);
-            return true;
         }
-
-        return false;
     }
 }

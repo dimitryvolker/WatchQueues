@@ -1,14 +1,15 @@
-using Toybox.WatchUi as Ui;
+import Toybox.WatchUi;
 import Toybox.Application.Storage;
+import Toybox.Lang;
 
 class ParkSelection {
     private var _agent as QueueTimesAgent;
 
-    public var menu as WatchUI.Menu2;
-    public var delegate as GeneralSettingsMenuDelegate;
+    public var menu as Menu2;
+    public var delegate as ParkSelectionMenuDelegate;
 
     function initialize(callback) {
-        menu = new Ui.Menu2({:title=>"Themepark"});
+        menu = new Menu2({:title=>"Themepark"});
         _agent = new QueueTimesAgent();
         _agent.getThemeParks(method(:onInitDataRecieve));
         delegate = new ParkSelectionMenuDelegate(callback);
@@ -36,7 +37,7 @@ class ParkSelection {
             var id = themeparks[i].id;
             var label = themeparks[i].name;
             var subLabel = themeparks[i].country + ", " + themeparks[i].continent;
-            menu.addItem(new Ui.MenuItem(label, subLabel, id, null));
+            menu.addItem(new MenuItem(label, subLabel, id, null));
         }
 
         // Push the Menu2 View set up in the initializer

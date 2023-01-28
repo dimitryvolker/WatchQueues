@@ -1,5 +1,6 @@
 using Toybox.WatchUi as Ui;
 import Toybox.Application.Storage;
+import Toybox.Lang;
 
 class ParkSelectionMenuDelegate extends Ui.Menu2InputDelegate {
     private var _callback as Method;                // Callback used for when settings has been changed
