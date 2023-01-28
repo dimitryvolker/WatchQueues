@@ -3,11 +3,11 @@ import Toybox.Application.Storage;
 
 class GeneralSettings {
     public var menu as Menu2;
-    public var delegate as GeneralSettingsMenuDelegate;
+    // public var delegate as GeneralSettingsMenuDelegate;
     private var _parkItem as MenuItem;
     private var _sortItem as MenuItem;
 
-    function initialize(callback) {
+    function initialize() {
         menu = new Menu2({:title=>"Settings"});
         var selectedThemepark = Storage.getValue("selected_themepark_label");
         System.println(selectedThemepark);
@@ -23,9 +23,9 @@ class GeneralSettings {
         _sortItem = new MenuItem("Sorted By", "Default", "selected_sorted", null);
         menu.addItem(_sortItem);
 
-        delegate = new GeneralSettingsMenuDelegate(callback);
+        // delegate = new GeneralSettingsMenuDelegate(callback);
 
         // Push the Menu2 View set up in the initializer
-        WatchUi.switchToView(menu, delegate, WatchUi.SLIDE_IMMEDIATE);
+        WatchUi.switchToView(menu, null, WatchUi.SLIDE_IMMEDIATE);
     }
 }

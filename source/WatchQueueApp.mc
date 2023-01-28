@@ -2,18 +2,14 @@ import Toybox.Application;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class WatchQueuesApp extends Application.AppBase {
+class WatchQueueApp extends Application.AppBase {
+
     function initialize() {
         AppBase.initialize();
     }
 
     // onStart() is called on application start up
     function onStart(state as Dictionary?) as Void {
-
-    }
-
-    function onControllerInitialized() as Void{
-
     }
 
     // onStop() is called when your application is exiting
@@ -21,11 +17,12 @@ class WatchQueuesApp extends Application.AppBase {
     }
 
     // Return the initial view of your application here
-    function getInitialView(){
-        return [ new InitView() ];
+    function getInitialView() as Array<Views or InputDelegates>? {
+        return [ new InitView(), new InitViewDelegate() ] as Array<Views or InputDelegates>;
     }
+
 }
 
-function getApp() as WatchQueuesApp {
-    return Application.getApp() as WatchQueuesApp;
+function getApp() as WatchQueueApp {
+    return Application.getApp() as WatchQueueApp;
 }

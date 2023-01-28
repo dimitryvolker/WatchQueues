@@ -18,6 +18,6 @@ class StorageService {
      *  Get the selected park id on the device
      */
     public function getSelectedParkId() as Number {
-        return Storage.getValue(_selectedParkIdKey);
+        return Storage.getValue(_selectedParkIdKey) != null ? Storage.getValue(_selectedParkIdKey) : 160;
     }
 }

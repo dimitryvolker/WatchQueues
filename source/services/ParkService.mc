@@ -4,15 +4,15 @@ import Toybox.Lang;
     Service for handling storage on the device
 */
 class ParkService {
-    private var _agent as QueueTimesAgent;          // Agent for communicating with the QueueTimes API
-    private var _selectedThemeparkId as Number;     // Selected Thempark id
-    private var _storageService as StorageService;  // Service for handling storage on the garmin device
-    private var _onQueueTimesUpdated as Method;     // Callback method triggered when new data has been added
+    private var _agent as QueueTimesAgent;                                              // Agent for communicating with the QueueTimes API
+    private var _selectedThemeparkId as Number;                                         // Selected Thempark id
+    private var _storageService as StorageService;                                      // Service for handling storage on the garmin device
+    private var _onQueueTimesUpdated as Method(rides as Array<Dictionary>) as Void;     // Callback method triggered when new data has been added
 
     /*
      *   Default constructor
      */
-    public function initialize(onQueueTimesUpdated as Method){
+    public function initialize(onQueueTimesUpdated as Method(rides as Array<Dictionary>) as Void){
         _agent = new QueueTimesAgent();
         _storageService = new StorageService();
         _selectedThemeparkId = _storageService.getSelectedParkId();
@@ -35,15 +35,18 @@ class ParkService {
             return;
         }
 
-        var rides = [0]; // Rides collection
+        var rides = []; // Rides collection
         
         // Queue-times can divide a theme park into so called "lands" 
         if(data["lands"].size() as Number > 0){
             for (var i = 0; i < data["lands"].size() as Number; i++) {
-                rides.addAll(data["lands"][i] as Array<Dictionary>);
+                var land = data["lands"][i];
+                var landRides = land["rides"];
+                var x = landRides[0];
+                rides.addAll(landRides);
             }
         }else{
-            rides.addAll(data["rides"] as Array<Dictionary>);
+            rides.addAll(data["rides"]);
         }
 
         _onQueueTimesUpdated.invoke(rides);
