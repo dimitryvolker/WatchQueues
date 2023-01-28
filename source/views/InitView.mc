@@ -4,10 +4,12 @@ import Toybox.Lang;
 
 class InitView extends WatchUi.View {
     private var _parkService as ParkService;
+    private var _storageService as StorageService;
 
     function initialize() {
         View.initialize();
-        _parkService = new ParkService(method(:onQueueTimesUpdated));
+        _parkService = new ParkService(method(:onQueueTimesUpdated), null);
+        _storageService = new StorageService();
     }
 
     // Load your resources here
@@ -36,7 +38,7 @@ class InitView extends WatchUi.View {
     }
 
     function onQueueTimesUpdated(rides as Array<Dictionary>) as Void{
-        var menu = new WatchUi.Menu2({:title=>"My Menu2"});
+        var menu = new WatchUi.Menu2({:title=>_storageService.getSelectedParkName()});
         var delegate;
 
         for (var i = 0; i < rides.size() as Number; i++) {
