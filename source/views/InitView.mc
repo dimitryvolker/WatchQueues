@@ -54,6 +54,6 @@ class InitView extends WatchUi.View {
         }
 
         // Push the Menu2 View set up in the initializer
-        WatchUi.pushView(menu, new QueueDelegate(), WatchUi.SLIDE_IMMEDIATE);
+        WatchUi.switchToView(menu, new QueueDelegate(), WatchUi.SLIDE_IMMEDIATE);
     }
 }

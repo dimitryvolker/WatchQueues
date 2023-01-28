@@ -1,10 +1,13 @@
 import Toybox.Lang;
+import Toybox.Timer;
+import Toybox.System;
 
 /*
     Service for handling storage on the device
 */
 class ParkService {
-    private var _agent as QueueTimesAgent;                                                      // Agent for communicating with the QueueTimes API
+    private var _agent as QueueTimesAgent;
+    private var _timer as Timer;                                                // Agent for communicating with the QueueTimes API
     private var _selectedThemeparkId as Number;                                                 // Selected Thempark id
     private var _storageService as StorageService;                                              // Service for handling storage on the garmin device
     private var _onQueueTimesUpdated as Method(rides as Array<Dictionary>) as Void or Null;     // Callback method triggered when new data has been added
@@ -19,12 +22,18 @@ class ParkService {
         _selectedThemeparkId = _storageService.getSelectedParkId();
         _onQueueTimesUpdated = onQueueTimesUpdated;
         _onParksReceived = onParksReceived;
+        _timer = new Timer.Timer();
     }
 
     /*
      *   Retrieves the rides of a selected themepark
      */
     public function fetchRides() as Void{
+        _timer.start(method(:fetchRidesTimerCallback), 60000, true);
+    }
+
+    public function fetchRidesTimerCallback() as Void{
+        System.println("Checking queue times");
         _agent.getQueues(_selectedThemeparkId, method(:onQueueDataRecieved));
     }
 

@@ -3,10 +3,9 @@
 Garmin ConnectIQ application for tracking queues in themeparks.
 
 - [x] Show ride queues on screen
-- [x] Navigate per three rides
 - [x] Select a theme park and save the settings
 - [x] Init loading screen
-- [ ] QueueTimes API caching
+- [ ] Automated refresh
 - [ ] Custom sort order for rides
 - [ ] Sort order based on geolocation
 
