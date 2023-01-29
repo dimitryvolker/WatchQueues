@@ -29,7 +29,8 @@ class ParkService {
      *   Retrieves the rides of a selected themepark
      */
     public function fetchRides() as Void{
-        _timer.start(method(:fetchRidesTimerCallback), 60000, true);
+        fetchRidesTimerCallback();
+        _timer.start(method(:fetchRidesTimerCallback), 10000, true);
     }
 
     public function fetchRidesTimerCallback() as Void{
