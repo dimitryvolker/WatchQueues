@@ -72,14 +72,14 @@ class InitView extends WatchUi.View {
                 _menu.addItem(
                     new MenuItem(
                         ride["name"],
-                        ride["is_open"] == true ? ride["wait_time"] + " minuten" : "Gesloten",
+                        ride["is_open"] == true ? ride["wait_time"] + " minutes" : "Closed",
                         "" + ride["id"],
                         {}
                     )
                 );
             }else{
                 var relatedMenuItem = _menu.getItem(relatedMenuItemId);
-                relatedMenuItem.setSubLabel(ride["is_open"] == true ? ride["wait_time"] + " minuten" : "Gesloten");
+                relatedMenuItem.setSubLabel(ride["is_open"] == true ? ride["wait_time"] + " minutes" : "Closed");
             }
         }
 
