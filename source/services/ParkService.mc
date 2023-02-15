@@ -7,7 +7,7 @@ import Toybox.System;
 */
 class ParkService {
     private var _agent as QueueTimesAgent;
-    private var _timer as Timer;                                                // Agent for communicating with the QueueTimes API
+    private var _timer as Timer.Timer;                                                // Agent for communicating with the QueueTimes API
     private var _selectedThemeparkId as Number;                                                 // Selected Thempark id
     private var _storageService as StorageService;                                              // Service for handling storage on the garmin device
     private var _onQueueTimesUpdated as Method(rides as Array<Dictionary>) as Void or Null;     // Callback method triggered when new data has been added

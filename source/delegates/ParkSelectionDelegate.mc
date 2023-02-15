@@ -10,19 +10,16 @@ class ParkSelectionDelegate extends Menu2InputDelegate {
         _storageService = new StorageService();
     }
 
-    function onSelect(item as MenuItem) {
+    function onSelect(item as MenuItem) as Void {
         var selectedItemId = item.getId();
         var selectedItemLabel = item.getLabel();
 
         _storageService.setSelectedParkId(selectedItemId.toNumber());
         _storageService.setSelectedParkName(selectedItemLabel);
         var _ = new GeneralSettings();
-
-        return true;
     }
 
-    function onBack() as Boolean {
+    function onBack() as Void {
         var _ = new GeneralSettings();
-        return true;
     }
 }

@@ -12,7 +12,7 @@ class InitViewDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onBack() as Boolean {
-        
+        return false;
     }
 
 }

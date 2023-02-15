@@ -8,11 +8,11 @@ class QueueDelegate extends WatchUi.Menu2InputDelegate {
         Menu2InputDelegate.initialize();
     }
 
-    function onSelect(item) {
+    function onSelect(item) as Void {
         new GeneralSettings();
     }
 
-    function onBack() as Boolean {
+    function onBack() as Void {
         System.exit();
     }
 } 
